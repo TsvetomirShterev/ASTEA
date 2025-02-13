@@ -1,0 +1,21 @@
+<div class="user-container" *ngIf="user">
+  <h2>Welcome, {{ user.username }}</h2>
+  <p>Email: {{ user.email }}</p>
+
+  <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>New Password</mat-label>
+      <input matInput type="password" formControlName="newPassword" />
+      <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('required')">New password is required</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="passwordForm.invalid">
+      Change Password
+    </button>
+  </form>
+</div>
+
+<!-- Show loading or redirect if the user is not logged in -->
+<div *ngIf="!user">
+  <mat-spinner></mat-spinner>
+</div>
