@@ -13,9 +13,10 @@
       Change Password
     </button>
   </form>
+
+  <button mat-raised-button color="warn" (click)="logout()">
+    Logout
+  </button>
 </div>
 
-<!-- Show loading or redirect if the user is not logged in -->
-<div *ngIf="!user">
-  <mat-spinner></mat-spinner>
-</div>
+
