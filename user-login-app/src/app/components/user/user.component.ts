@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { selectUser } from 'src/app/store/auth/auth.selectors';
 import { clearUser } from 'src/app/store/actions/auth.actions';
-import { updatePassword } from 'src/app/store/actions/auth.actions'; // Ensure you have this action to update password in your store
-
+import { updatePassword } from 'src/app/store/actions/auth.actions';
+import { AuthInterceptor } from 'src/app/interceptors/auth.interceptor';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -43,10 +43,18 @@ export class UserComponent implements OnInit {
     const newPassword = this.passwordForm.value.newPassword;
 
     if (this.user) {
-      this.store.dispatch(updatePassword({ userId: this.user.id, newPassword }));
-      alert('Password updated successfully!');
+      this.authService.updatePassword(this.user.id, newPassword).subscribe({
+        next: (response) => {
+          alert('Password updated successfully!');
+        },
+        error: (error) => {
+          console.error('Error updating password:', error);
+          alert('Failed to update password.');
+        }
+      });
     }
   }
+
 
   logout() {
     this.store.dispatch(clearUser());
